@@ -11,11 +11,11 @@ import Fabric
 import TwitterKit
 
 
-class ViewController: UIViewController{
+class LogInController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        // log in/authenticate user with twitter's login button
         Twitter.sharedInstance().startWithConsumerKey("cwYtwlK2bFyoWTyiAkhCsWWG8", consumerSecret: "xnCWJE8ulUwPxvkJ0YvWDTbFAsHdA5paC6SMygy5VlKrN14iNT")
         Fabric.with([Twitter.sharedInstance()])
         let logInButton = TWTRLogInButton(logInCompletion: { session, error in
