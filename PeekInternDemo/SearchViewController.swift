@@ -13,14 +13,15 @@ import Fabric
 class SearchViewController: UITableViewController {
     
     var tweetList = [Tweet]()
-    var expectedTweets = 6
-    let tweetsPerPage = 6
+    let tweetsPerPage = 5
+    var expectedTweets = 0
     var maxID = "none"
     var profilePictures = Dictionary<String, UIImage>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.registerNib(UINib(nibName: "TweetCell", bundle: nil), forCellReuseIdentifier: "TweetCell")
+        self.tableView.registerNib(UINib(nibName: "RefreshCell", bundle: nil), forCellReuseIdentifier: "RefreshCell")
         self.tableView.backgroundColor = UIColor.lightGrayColor()
         // pulling up calls refresh method
         self.refreshControl = UIRefreshControl()
@@ -42,7 +43,7 @@ class SearchViewController: UITableViewController {
     func refresh(sender: AnyObject?) {
         // empty current tweets and load new ones
         tweetList = []
-        expectedTweets = 6
+        expectedTweets = tweetsPerPage
         maxID = "none"
         fetchData()
         tableView.reloadData()
@@ -74,9 +75,12 @@ class SearchViewController: UITableViewController {
                         for status in statusList{
                             self.tweetList.append(Tweet(status: status as! NSDictionary))
                         }
+                        print("appended \(statusList.count)")
                         //update maxID to id of oldest tweet currently fetched minus 1
-                        self.maxID = statusList[statusList.count - 1]["id_str"] as! String
-                        self.maxID = String(Int(self.maxID)! - 1)
+                        if (statusList.count > 0) { // in case query gives empty result
+                            self.maxID = statusList[statusList.count - 1]["id_str"] as! String
+                            self.maxID = String(UInt64(self.maxID)! - 1)
+                        }
                         self.downloadProfilePictures()
                     } catch {
                         print("error deserializing JSON: \(error)")
@@ -106,12 +110,18 @@ class SearchViewController: UITableViewController {
     
     override func tableView(tableView: UITableView,
         numberOfRowsInSection section: Int) -> Int {
-            return tweetList.count
+            return tweetList.count + 1 //make room for the spinning activity indicator
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if (indexPath.row == tweetList.count) {
+            let cell: RefreshCell = tableView.dequeueReusableCellWithIdentifier("RefreshCell") as! RefreshCell
+            cell.indicator.startAnimating()
+            return cell
+        }
         let cell: TweetCell = tableView.dequeueReusableCellWithIdentifier("TweetCell") as! TweetCell
         let tweet = tweetList[indexPath.row]
+        //print(tableView.numberOfRowsInSection(0))
         // set the cell's label's text to the tweet itself
         cell.tweetLabel.text = "User: \(tweet.user) \n \(tweet.text.stringByReplacingOccurrencesOfString("&amp;", withString: "&"))"
         // make the cell's color alternate every row
@@ -120,16 +130,20 @@ class SearchViewController: UITableViewController {
         if let image = profilePictures[tweet.id] {
             cell.profileImageView.image = image
         }
-        // load more tweets if user has scrolled to last cell currently in view
-        if (indexPath.row == expectedTweets - 1) {
-            loadMoreTweets()
-            expectedTweets += tweetsPerPage
-        }
-        // set the button's click handler to retweet function
+        // set the button's click handler to retweet function and its tag to the index of the tweet in tweetList
         cell.retweetButton.addTarget(self, action: "retweet:", forControlEvents: UIControlEvents.TouchUpInside)
         cell.retweetButton.tag = indexPath.row
         
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        // load more tweets if user has scrolled to last cell currently in view
+        if ((indexPath.row == expectedTweets) && (tableView.numberOfRowsInSection(0) > tweetsPerPage)) {
+            print("loading more\(tableView.numberOfRowsInSection(0))")
+            loadMoreTweets()
+            expectedTweets += tweetsPerPage
+        }
     }
     
     func retweet(sender: AnyObject?) {
@@ -156,6 +170,14 @@ class SearchViewController: UITableViewController {
                 }
                 else {
                     print("Error: \(connectionError)")
+                    
+                    if (connectionError!.code == 327) {
+                        let refreshAlert = UIAlertController(title: "Failure", message: "You have already retweeted tweet from \(tweetOwner)", preferredStyle: UIAlertControllerStyle.Alert)
+                        
+                        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: { (action: UIAlertAction!) in
+                        }))
+                        self.presentViewController(refreshAlert, animated: true, completion: nil)
+                    }
                 }
             }
         }
@@ -178,8 +200,8 @@ class SearchViewController: UITableViewController {
         if (editingStyle == UITableViewCellEditingStyle.Delete) {
             // remove tweet from tweetList and update table view
             tweetList.removeAtIndex(indexPath.row)
-            expectedTweets -= 1
-            tableView.reloadData()
+            expectedTweets -= 1 //I chose not to use deleteRowAtIndexPaths because of its weird effects on the scrolling
+            tableView.reloadData() 
         }
     }
 }

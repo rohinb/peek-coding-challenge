@@ -22,6 +22,8 @@
 		0FA3731D1C9D3538002B3DDA /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA3731C1C9D3538002B3DDA /* Tweet.swift */; };
 		0FA373211C9E26FF002B3DDA /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA373201C9E26FF002B3DDA /* TweetCell.swift */; };
 		0FA373231C9F9BDF002B3DDA /* TweetCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FA373221C9F9BDF002B3DDA /* TweetCell.xib */; };
+		0FA373251CA10C96002B3DDA /* RefreshCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FA373241CA10C96002B3DDA /* RefreshCell.xib */; };
+		0FA373271CA10D1C002B3DDA /* RefreshCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA373261CA10D1C002B3DDA /* RefreshCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,8 @@
 		0FA3731C1C9D3538002B3DDA /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		0FA373201C9E26FF002B3DDA /* TweetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
 		0FA373221C9F9BDF002B3DDA /* TweetCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TweetCell.xib; sourceTree = "<group>"; };
+		0FA373241CA10C96002B3DDA /* RefreshCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RefreshCell.xib; sourceTree = "<group>"; };
+		0FA373261CA10D1C002B3DDA /* RefreshCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +132,8 @@
 				0FA3731C1C9D3538002B3DDA /* Tweet.swift */,
 				0FA3731A1C94C9CE002B3DDA /* SearchViewController.swift */,
 				0FA373221C9F9BDF002B3DDA /* TweetCell.xib */,
+				0FA373241CA10C96002B3DDA /* RefreshCell.xib */,
+				0FA373261CA10D1C002B3DDA /* RefreshCell.swift */,
 				0FA372E01C940802002B3DDA /* Main.storyboard */,
 				0FA372E61C940802002B3DDA /* Assets.xcassets */,
 				0FA372E81C940802002B3DDA /* LaunchScreen.storyboard */,
@@ -260,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FA373181C941AF2002B3DDA /* TwitterKitResources.bundle in Resources */,
+				0FA373251CA10C96002B3DDA /* RefreshCell.xib in Resources */,
 				0FA373231C9F9BDF002B3DDA /* TweetCell.xib in Resources */,
 				0FA372EA1C940802002B3DDA /* LaunchScreen.storyboard in Resources */,
 				0FA372E71C940802002B3DDA /* Assets.xcassets in Resources */,
@@ -305,6 +312,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0FA3731D1C9D3538002B3DDA /* Tweet.swift in Sources */,
+				0FA373271CA10D1C002B3DDA /* RefreshCell.swift in Sources */,
 				0FA3731B1C94C9CE002B3DDA /* SearchViewController.swift in Sources */,
 				0FA373211C9E26FF002B3DDA /* TweetCell.swift in Sources */,
 				0FA372DF1C940802002B3DDA /* LogInController.swift in Sources */,
