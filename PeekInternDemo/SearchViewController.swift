@@ -201,7 +201,7 @@ class SearchViewController: UITableViewController {
             // remove tweet from tweetList and update table view
             tweetList.removeAtIndex(indexPath.row)
             expectedTweets -= 1 //I chose not to use deleteRowAtIndexPaths because of its weird effects on the scrolling
-            tableView.reloadData() 
+            tableView.reloadData()
         }
     }
 }
